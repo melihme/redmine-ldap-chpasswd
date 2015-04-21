@@ -1,3 +1,8 @@
 # English strings go here for Rails i18n
 en:
-  my_label: "My label"
+  label_change_password: "Change Password"
+  label_current_password: "Current Password"
+  label_new_password: "New Password"
+  label_new_password_again: "New Password (again)"
+  notice_update_successful: "Password update successful"
+  error_can_not_bind_the_ldap_server: "Cannot bind to LDAP server! (User) %{login},%{treebase}"

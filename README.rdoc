@@ -1,3 +1,8 @@
 = redmine-ldap-chpasswd plugin
 
-Description goes here
+Based on Thao le's work - https://github.com/ycicom/redmine-ldap-chpasswd
+
+Improvements:
+* Some modifications to make it compatible with Redmine 2.4.2.stable
+* Language support added
+    * Turkish languge locale added

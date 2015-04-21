@@ -1,4 +1,5 @@
 require 'digest/sha1'
+require 'base64'
 
 module RedmineLdapChangePasswordPatch
   def self.included(base) # :nodoc:
@@ -37,7 +38,7 @@ module RedmineLdapChangePasswordPatch
 
     def change_ldap_password(password, newpass)
       authSource = AuthSource.find(@user.auth_source_id)
-      login = "uid=#{@user.login},ou=People"
+      login = "uid=#{@user.login}"
       treebase = authSource.base_dn
       ldap = Net::LDAP.new 
       ldap.host = authSource.host
@@ -45,12 +46,12 @@ module RedmineLdapChangePasswordPatch
       ldap.port = authSource.port
       ldap.auth "#{login},#{treebase}", password
       if ldap.bind
-        e_password = "{SHA}" + encode64(Digest::SHA1.digest(newpass)).chomp
+        e_password = "{SHA}" + Base64.encode64(Digest::SHA1.digest(newpass)).chomp
         # Do the modification
         ldap.replace_attribute "#{login},#{treebase}", :userPassword, e_password
-        flash[:notice] = "Password update successful"
+        flash[:notice] = l(:notice_update_successful) #Password update successful
       else
-        flash[:notice] = "Cannot bind to LDAP server! (User) #{login},#{treebase}"
+        flash[:error] = l(:error_can_not_bind_the_ldap_server, :login => login, :treebase => ldap.base) #Cannot bind to LDAP server! (User) %{login},%{treebase}
       end
     end#change_ldap_password
 
